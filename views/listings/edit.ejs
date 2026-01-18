@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentora</title>
+</head>
+<body>
+    <h3>Edit listing</h3>
+    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST">
+        <label for="listing[title]">Title</label>
+        <input type="text" name="listing[title]" value="<%= listing.title %>" placeholder="Enter title"><br><br>
+
+        <label for="listing[description]">Description</label>
+        <input type="text" name="listing[description]" value="<%= listing.description %>" placeholder="Enter Description"><br><br>
+
+        <label for="listing[image]">Image</label>
+        <input type="text" name="listing[image]" value="<%= listing.image %>" placeholder="Enter Image-URL"><br><br>
+
+        <label for="listing[price]">Price</label>
+        <input type="number" name="listing[price]" value="<%= listing.price %>" placeholder="Enter Price"><br><br>
+
+        <label for="listing[location]">Location</label>
+        <input type="text" name="listing[location]" value="<%= listing.location %>" placeholder="Enter location"><br><br>
+
+        <label for="listing[country]">Country</label>
+        <input type="text" name="listing[country]" value="<%= listing.country %>" placeholder="Enter country"><br><br>
+
+        <button type="submit">Edit</button>
+
+    </form>
+</body>
+</html>
