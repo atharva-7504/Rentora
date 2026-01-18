@@ -1,21 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentora</title>
-</head>
-<body>
-    <h3>All Listings</h3>
-    <form action="/listings/new" method="get">
-        <button>Create Listing</button>
-    </form>
-    <ul>
-        <% for(let listing of allListings){ %>
-            <li>
-                <a href="http://localhost:3000/listings/<%= listing.id %>"><%= listing.title%></a>
-            </li>
-        <% } %>
-    </ul>
-</body>
-</html>
+<% layout("/layouts/boilerplate.ejs") %>
+
+<h3 class="page-title">All Listings</h3>
+
+<form action="/listings/new" method="get" class="create-form">
+  <button class="create-btn">Create Listing</button>
+</form>
+
+<div class="listing-grid">
+  <% for(let listing of allListings){ %>
+    <a href="/listings/<%=listing._id%>" class="listing-link">
+        <div class="listing-card">
+            <div class="image-wrapper">
+              <img src="<%= listing.image.url %>" alt="listing image">
+            </div>
+
+            <div class="card-body">
+              <p class="title"><%= listing.title %></p>
+              <p class="price">
+                &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+              </p>
+            </div>
+            
+        </div>
+    </a>
+  <% } %>
+</div>

@@ -1,0 +1,128 @@
+<!-- <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(180deg, #f4f5f7, #eceff3);
+  min-height: 200vh;
+}
+
+/* NAVBAR */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+
+  height: 72px;
+  padding: 0 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* LEFT */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: #ff385c;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+/* RIGHT */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn.ghost {
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  color: #111;
+}
+
+.btn.ghost:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.btn.primary {
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  color: #111;
+}
+
+.btn.primary:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+
+</style>
+
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="logo">Rentora</span>
+
+    <a href="#" class="nav-link">Explore</a>
+    <a href="#" class="nav-link">Add New Listing</a>
+  </div>
+
+  <div class="nav-right">
+    <button class="btn ghost">Login</button>
+    <button class="btn primary">Sign up</button>
+  </div>
+</nav> -->
+<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><i class="fa-regular fa-compass" style="color: #ff0011f6;"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link"  href="/">Home</a>
+        <a class="nav-link" href="/listings">All Listing</a>
+        <a class="nav-link" href="/listings/new">New Listing</a>
+        
+      </div>
+    </div>
+  </div>
+</nav>

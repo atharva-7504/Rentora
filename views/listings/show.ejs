@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentora</title>
-</head>
-<body>
+<% layout("/layouts/boilerplate.ejs") %>
+<!-- <body>
     <h2>Listing Details</h2>
     <ul>
         <li><%= listing.title %></li>
@@ -19,5 +13,46 @@
     <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
         <button>delete</button>
     </form>
-</body>
-</html>
+    
+</body> -->
+
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="show-container">
+
+  <!-- IMAGE -->
+  <div class="show-image-wrapper">
+    <img src="<%= listing.image.url %>" alt="listing image">
+  </div>
+
+  <!-- CONTENT -->
+  <div class="show-content">
+
+    <h1 class="show-title"><%= listing.title %></h1>
+
+    <p class="show-location">
+      <%= listing.location %>, <%= listing.country %>
+    </p>
+
+    <p class="show-price">
+      ₹<%= listing.price.toLocaleString("en-IN") %> <span>/ night</span>
+    </p>
+
+    <div class="show-description">
+      <p><%= listing.description %></p>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="show-actions">
+      <a href="/listings/<%= listing._id %>/edit" class="btn-outline">
+        Edit Listing
+      </a>
+
+      <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
+        <button class="btn-danger">Delete</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
