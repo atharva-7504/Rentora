@@ -1,58 +1,119 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<!-- <body>
-    <h2>Listing Details</h2>
-    <ul>
-        <li><%= listing.title %></li>
-        <li><%= listing.description %></li>
-        <li> &#8377;<%= listing.price.toLocaleString("en-IN") %></li>
-        <li><%= listing.location %></li>
-        <li><%= listing.country %></li>
-    </ul>
-    <br>
-    <a href="/listings/<%=listing._id%>/edit">Edit this Listing</a>
-    <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
-        <button>delete</button>
-    </form>
-    
-</body> -->
+<style>
+    /* SHOW PAGE WRAPPER */
+.row {
+  margin-top: 32px;
+  justify-content: center;
+}
 
-<% layout("/layouts/boilerplate.ejs") %>
+/* TITLE */
+.row h2 {
+  text-align: center;
+  margin-bottom: 28px;
+  font-weight: 600;
+}
 
-<div class="show-container">
+/* CARD */
+.card {
+  margin: 0 auto 24px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
 
-  <!-- IMAGE -->
-  <div class="show-image-wrapper">
-    <img src="<%= listing.image.url %>" alt="listing image">
-  </div>
+/* IMAGE */
+.show-img {
+  height: 320px;
+  object-fit: cover;
+}
 
-  <!-- CONTENT -->
-  <div class="show-content">
+/* CARD TEXT */
+.card-text {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
 
-    <h1 class="show-title"><%= listing.title %></h1>
+/* DETAILS LIST */
+ul {
+  max-width: 600px;
+  margin: 0 auto 24px;
+  padding: 24px;
+  list-style: none;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+}
 
-    <p class="show-location">
-      <%= listing.location %>, <%= listing.country %>
-    </p>
+ul li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #333;
+}
 
-    <p class="show-price">
-      ₹<%= listing.price.toLocaleString("en-IN") %> <span>/ night</span>
-    </p>
+/* ACTIONS */
+a[href*="edit"] {
+  display: block;
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #111;
+}
 
-    <div class="show-description">
-      <p><%= listing.description %></p>
+form {
+  text-align: center;
+}
+
+form button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: #f5f5f5;
+}
+
+/* RESPONSIVE FIXES */
+@media (max-width: 768px) {
+  .card.col-6 {
+    width: 100%;
+  }
+
+  .show-img {
+    height: 220px;
+  }
+
+  ul {
+    padding: 18px;
+  }
+}
+
+</style>
+<div class="row">
+    <div class="col-8 offset-2">
+        <h2>Listing Details</h2>
     </div>
-
-    <!-- ACTIONS -->
-    <div class="show-actions">
-      <a href="/listings/<%= listing._id %>/edit" class="btn-outline">
-        Edit Listing
-      </a>
-
-      <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
-        <button class="btn-danger">Delete</button>
-      </form>
-    </div>
-
-  </div>
-</div>
-
+        <div class="card col-6">
+            <img src="<%=listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+            <div class="card-body">
+                <p class="card-text"><%= listing.title %></p>
+            </div>
+        </div>
+        <ul>
+            <li><%= listing.title %></li>
+            <li><%= listing.description %></li>
+            <li> &#8377;<%= listing.price.toLocaleString("en-IN") %></li>
+            <li><%= listing.location %></li>
+            <li><%= listing.country %></li>
+        </ul>
+        <br>
+        <a href="/listings/<%=listing._id%>/edit">Edit this Listing</a>
+        <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
+            <button>delete</button>
+        </form>
+</div>    

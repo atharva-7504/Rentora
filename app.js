@@ -7,6 +7,9 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const MONGO_URL = "mongodb://127.0.0.1:27017/rentora";
+const wrapAsync = require("./utils/wrapAsync.js");
+const ExpressError = require("./utils/ExpressError.js");
+const listingSchema = require("./schema.js");
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"/views"));
@@ -28,20 +31,38 @@ async function main(){
 app.get("/",(req,res)=>{
     res.send("Working");
 })
-app.get("/listings",async(req,res)=>{
+
+const validateListing = function(req,res,next){
+    // finding error through validation
+    let {error} = listingSchema.validate(req.body);
+    // throwing error
+    if(error){
+        let errMsg = error.details.map(el=>{el.message}).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+}
+
+app.get("/listings",wrapAsync(async(req,res)=>{
     const allListings = await Listing.find({});
-    console.log(allListings);
     res.render("listings/index.ejs",{ allListings });
-})
+}));
+//New Form Route
 app.get("/listings/new",(req,res)=>{
     res.render("listings/new.ejs");
 });
-app.post("/listings",async (req,res)=>{
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listings")
-})
-app.put("/listings/:id",async(req,res)=>{
+//Create Route
+app.post("/listings",validateListing,wrapAsync(async (req,res,next)=>{
+        const newListing = new Listing(req.body.listing);
+        await newListing.save();
+        res.redirect("/listings");       
+}));
+//Edit Route
+app.put("/listings/:id",wrapAsync(async(req,res)=>{
+    if(!req.body.listing){
+        throw new ExpressError(400,"Send Valid data for listing.")
+    }
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id,req.body.listing,{new:true});
     if(req.file){
@@ -52,22 +73,29 @@ app.put("/listings/:id",async(req,res)=>{
         await listing.save();
     }
     res.redirect(`/listings/${id}`)
-})
-app.delete("/listings/:id",async(req,res)=>{
+}));
+
+//Delete Route
+app.delete("/listings/:id",wrapAsync(async(req,res)=>{ 
     let {id} = req.params; 
     let listing = await Listing.findByIdAndDelete(id)
     res.redirect("/listings");
-})
-app.get("/listings/:id",async(req,res)=>{
+}));
+
+//Show Route
+app.get("/listings/:id",wrapAsync(async(req,res)=>{
     let {id} = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/show.ejs",{listing});
-});
-app.get("/listings/:id/edit",async(req,res)=>{
+}));
+
+//Edit Form Route
+app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
     let {id} = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs",{listing})
-})
+}));
+
 // app.get("/listings", async (req,res)=>{
 //     let sampleListing = new Listing({
 //         title:"24 Venue",
@@ -80,6 +108,16 @@ app.get("/listings/:id/edit",async(req,res)=>{
 //     console.log("sample saved");
 //     res.send("success.");
 // })
+
+//Custom Error Class
+app.use((req,res,next)=>{
+    next(new ExpressError(404,"Page Not Found!"));
+})
+//Handling Async Errors
+app.use((err,req,res,next)=>{
+    let {status=500,message="Something went Wrong!"} = err;
+    res.status(status).render("error.ejs",{err});
+})
 app.listen(PORT,()=>{
     console.log(`Server running on port : ${PORT}`);
 })

@@ -45,6 +45,7 @@ body{
     justify-content: center;
     align-items: space-evenly;
     text-align: center;
+
 }
 
 
@@ -268,4 +269,7 @@ body{
     margin: auto;
   }
 }
+
+
+/* Show Page */
 

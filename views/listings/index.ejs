@@ -2,10 +2,6 @@
 
 <h3 class="page-title">All Listings</h3>
 
-<form action="/listings/new" method="get" class="create-form">
-  <button class="create-btn">Create Listing</button>
-</form>
-
 <div class="listing-grid">
   <% for(let listing of allListings){ %>
     <a href="/listings/<%=listing._id%>" class="listing-link">
