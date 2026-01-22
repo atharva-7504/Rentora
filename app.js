@@ -3,13 +3,15 @@ const mongoose = require("mongoose");
 const PORT = 3000;
 const app = express();
 const Listing = require("./models/listing.js");
+const Review = require("./models/review.js")
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const MONGO_URL = "mongodb://127.0.0.1:27017/rentora";
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const listingSchema = require("./schema.js");
+const {listingSchema} = require("./schema.js");
+const {reviewSchema} = require("./schema.js");
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"/views"));
@@ -32,6 +34,7 @@ app.get("/",(req,res)=>{
     res.send("Working");
 })
 
+//Schema validation for listing
 const validateListing = function(req,res,next){
     // finding error through validation
     let {error} = listingSchema.validate(req.body);
@@ -43,6 +46,20 @@ const validateListing = function(req,res,next){
         next();
     }
 }
+
+//Schema validation for Review
+const validateReview = function(req,res,next){
+    // finding error through validation
+    let {error} = reviewSchema.validate(req.body);
+    // throwing error
+    if(error){
+        let errMsg = error.details.map(el=>{el.message}).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+}
+
 
 app.get("/listings",wrapAsync(async(req,res)=>{
     const allListings = await Listing.find({});
@@ -82,11 +99,12 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
     res.redirect("/listings");
 }));
 
+
 //Show Route
 app.get("/listings/:id",wrapAsync(async(req,res)=>{
     let {id} = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/show.ejs",{listing});
+    const listing = await Listing.findById(id).populate("reviews");
+    res.render("listings/show.ejs",{ listing });
 }));
 
 //Edit Form Route
@@ -94,6 +112,26 @@ app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
     let {id} = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs",{listing})
+}));
+
+//Review Route
+//Review POST route
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res,next)=>{
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    console.log("new Review saved.");
+    res.redirect(`/listings/${listing.id}`)
+}));
+
+//Delete Review Route
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res,next)=>{
+    let {id,reviewId} = req.params;
+    await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
 }));
 
 // app.get("/listings", async (req,res)=>{
