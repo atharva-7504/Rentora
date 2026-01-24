@@ -17,3 +17,20 @@
     }, false)
   })
 })()
+
+//Flash msg
+  document.addEventListener("DOMContentLoaded", () => {
+    const alert = document.querySelector(".custom-alert");
+
+    if (alert) {
+      // Auto remove after 4 seconds
+      setTimeout(() => {
+        alert.remove();
+      }, 4000);
+
+      // Remove immediately on close click
+      alert.addEventListener("closed.bs.alert", () => {
+        alert.remove();
+      });
+    }
+  });
