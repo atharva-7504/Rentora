@@ -34,6 +34,7 @@ const listingSchema = Schema({
         ref:"Review"
     }]
 })
+//Post Middleware function
 listingSchema.post("findOneAndDelete",async(listing)=>{
     if(listing){
         await Review.deleteMany({_id:{$in:listing.reviews}});
