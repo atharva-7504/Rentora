@@ -6,10 +6,14 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const MONGO_URL = "mongodb://127.0.0.1:27017/rentora";
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/reviews.js")
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/reviews.js");
+const userRouter = require("./routes/user.js");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStratergy = require("passport-local");
+const User = require("./models/user.js");
 
 // Mongo Connection 
 main().then((res)=>{
@@ -44,6 +48,12 @@ app.use(session({
     }
 }))
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStratergy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 //For sending local data
 app.use((req,res,next)=>{
@@ -51,8 +61,11 @@ app.use((req,res,next)=>{
     res.locals.error = req.flash("error")
     next();
 })
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",reviews)
+
+
+app.use("/listings",listingRouter);
+app.use("/listings/:id/reviews",reviewRouter);
+app.use("/",userRouter);
 
 //Custom Error Class
 app.use((req,res,next)=>{
