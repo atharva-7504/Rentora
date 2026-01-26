@@ -121,8 +121,16 @@ body {
         <a class="nav-link"  href="/">Home</a>
         <a class="nav-link" href="/listings">All Listing</a>
         <a class="nav-link" href="/listings/new">New Listing</a>
-        
       </div>
+      <div class="navbar-nav ms-auto">
+        <% if(currentUser){ %>
+              <a class="nav-link" href="/logout">Logout</a>
+        <% } %>
+        <% if(!currentUser) { %>
+          <a class="nav-link"  href="/login">Log In</a>
+          <a class="nav-link" href="/signup">Sign Up</a>
+        <% } %>
+      </div>      
     </div>
   </div>
 </nav>

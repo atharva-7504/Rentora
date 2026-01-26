@@ -102,41 +102,50 @@ form button:hover {
             </div>
         </div>
         <ul>
+            <i>Owned by : <%= listing.owner.username %></i>
             <li><%= listing.description %></li>
             <li> &#8377;<%= listing.price.toLocaleString("en-IN") %></li>
             <li><%= listing.location %></li>
             <li><%= listing.country %></li>
         </ul>
         <br>
-        <a href="/listings/<%=listing._id%>/edit">Edit this Listing</a>
-        <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
-            <button class="btn btn-dark">Delete</button><br><br>
-        </form>
+        <% if(currentUser && listing.owner._id.equals(currentUser._id)) { %>
+            <a href="/listings/<%=listing._id%>/edit">Edit this Listing</a>
+            <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
+                <button class="btn btn-dark">Delete</button><br><br>
+            </form>
+        <% } %>
         <hr>
+        
         <div class="mb-3 mt-3">
-          <h4>Leave a Review</h4>
-          <form action="/listings/<%= listing._id%>/reviews" method="POST" class="needs-validation" novalidate>
+          <% if(currentUser) { %>
+            <h4>Leave a Review</h4>
+              <form action="/listings/<%= listing._id%>/reviews" method="POST" class="needs-validation" novalidate>
 
-              <div class="mb-3 mt-3">
-                <label for="rating" class="form-label">Rating</label>
-                <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range" >
-              </div>
+                  <div class="mb-3 mt-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range" >
+                  </div>
 
-              <div class="mb-3 mt-3">
-                <label for="comment" class="form-label">Comment</label>
-                <textarea type="text" id="comment" name="review[comment]" cols="20" rows="5" class="form-control" required></textarea>
-                <div class="invalid-feedback">Please add some comments for review</div>
-              </div>
+                  <div class="mb-3 mt-3">
+                    <label for="comment" class="form-label">Comment</label>
+                    <textarea type="text" id="comment" name="review[comment]" cols="20" rows="5" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Please add some comments for review</div>
+                  </div>
 
-              <br>
+                  <br>
 
-              <button class="btn btn-outline-dark">Submit</button>            
-          </form>
-          <hr>
+                  <button class="btn btn-outline-dark">Submit</button>            
+              </form>
+            <hr>
+          <% } %>
+
+
           <h4>All Reviews</h4>
             <% for(review of listing.reviews){ %>
                 <div class="card col-5 mb-3 w-50">
                   <div class="card-body">
+                    <h4 class="card-author">@<%= review.author.username %></h4>
                     <h5 class="card-title"><%= review.rating %> stars</h5>
                     <p><%= review.comment %></p>
                     <form action="/listings/<%= listing._id %>/reviews/<%= review._id%>?_method=DELETE" method="POST">

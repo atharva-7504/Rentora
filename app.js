@@ -6,6 +6,7 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const MONGO_URL = "mongodb://127.0.0.1:27017/rentora";
+const ExpressError = require("./utils/ExpressError.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/reviews.js");
 const userRouter = require("./routes/user.js");
@@ -58,7 +59,8 @@ passport.deserializeUser(User.deserializeUser());
 //For sending local data
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
-    res.locals.error = req.flash("error")
+    res.locals.error = req.flash("error");
+    res.locals.currentUser = req.user;
     next();
 })
 

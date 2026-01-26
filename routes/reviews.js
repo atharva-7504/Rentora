@@ -4,26 +4,14 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
-const {reviewSchema} = require("../schema.js");
-
-//Schema validation for Review
-const validateReview = function(req,res,next){
-    // finding error through validation
-    let {error} = reviewSchema.validate(req.body);
-    // throwing error
-    if(error){
-        let errMsg = error.details.map(el=>{el.message}).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-}
+const {isLoggedIn,isAuthor,validateReview} = require("../middleware.js");
 
 //Review Route
 //Review POST route
-router.post("/",validateReview,wrapAsync(async(req,res,next)=>{
+router.post("/",isLoggedIn,validateReview,wrapAsync(async(req,res,next)=>{
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
+    newReview.author = req.user._id;
     listing.reviews.push(newReview);
     await newReview.save();
     await listing.save();
@@ -32,7 +20,7 @@ router.post("/",validateReview,wrapAsync(async(req,res,next)=>{
 }));
 
 //Delete Review Route
-router.delete("/:reviewId",wrapAsync(async(req,res,next)=>{
+router.delete("/:reviewId",isLoggedIn,isAuthor,wrapAsync(async(req,res,next)=>{
     let {id,reviewId} = req.params;
     let listing = await Listing.findById(req.params.id);
     await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
