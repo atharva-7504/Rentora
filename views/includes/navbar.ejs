@@ -110,27 +110,237 @@ body {
     <button class="btn primary">Sign up</button>
   </div>
 </nav> -->
-<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #ff385c;      /* Rentora Red */
+    --dark: #222222;         /* Off-Black for text */
+    --light-gray: #717171;   /* Subtitle text */
+    --border-color: #dddddd;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding-top: 80px; /* Prevent content from hiding behind fixed nav */
+  }
+
+  /* --- Navbar Base --- */
+  .navbar {
+    background: #ffffff;
+    height: 80px;
+    border-bottom: 1px solid #ebebeb;
+    padding: 0 24px;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-brand {
+    color: var(--primary) !important;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* --- Premium Search Pill --- */
+  .search-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Width on Desktop */
+  }
+
+  .search-inp {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 40px;
+    padding: 12px 50px 12px 24px; /* Right padding for the button */
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--dark);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    transition: box-shadow 0.2s ease, transform 0.1s ease;
+    outline: none;
+  }
+
+
+  .search-inp::placeholder {
+    color: var(--light-gray);
+    font-weight: 500;
+  }
+
+  /* The Search Button (Inside the Input) */
+  .btn-search-icon {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--primary);
+    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  .btn-search-icon:hover {
+    background-color: #e00b41;
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  /* --- Right Side Buttons --- */
+  .nav-host-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dark);
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    transition: background-color 0.2s;
+  }
+  
+  .nav-host-link:hover {
+    background-color: #f7f7f7;
+  }
+
+  /* Auth Buttons (Logged Out) */
+  .btn-login {
+    font-weight: 600;
+    color: var(--dark);
+    text-decoration: none;
+    padding: 8px 12px;
+  }
+
+  .btn-signup {
+    background-color: var(--dark);
+    color: #fff !important;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .btn-signup:hover {
+    opacity: 0.85;
+  }
+
+  /* User Menu (Logged In) */
+  .user-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border-color);
+    padding: 5px 6px 5px 12px;
+    border-radius: 30px;
+    background: white;
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .user-menu-btn:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+  }
+
+  .user-avatar {
+    background-color: #717171;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  /* --- Mobile Responsive Tweak --- */
+  @media (max-width: 991px) {
+    .navbar {
+      height: auto;
+      padding: 12px 24px;
+    }
+    
+    .search-container {
+      margin: 15px 0; /* Add space when stacked */
+      max-width: 100%;
+    }
+
+    .navbar-collapse {
+      background: white;
+      padding-bottom: 15px;
+    }
+    
+    .nav-right-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      width: 100%;
+    }
+    
+    .nav-host-link { padding-left: 0; }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass" style="color: #ff0011f6;"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+    
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-sharp fa-solid fa-location-arrow"></i>Rentora
+    </a>
+
+    <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link"  href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listing</a>
-        <a class="nav-link" href="/listings/new">New Listing</a>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      
+      <div class="mx-auto search-container">
+        <form action="/listings/search" method="GET" class="d-flex w-100">
+            <input class="search-inp" type="search" placeholder="Search destinations..." name="q">
+            <button class="btn-search-icon" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
       </div>
-      <div class="navbar-nav ms-auto">
-        <% if(currentUser){ %>
-              <a class="nav-link" href="/logout">Logout</a>
-        <% } %>
-        <% if(!currentUser) { %>
-          <a class="nav-link"  href="/login">Log In</a>
-          <a class="nav-link" href="/signup">Sign Up</a>
-        <% } %>
-      </div>      
+
+      <div class="d-flex align-items-center nav-right-container">
+        <a class="nav-host-link" href="/listings/new">Rentora your home</a>
+
+        <div class="ms-lg-3 mt-2 mt-lg-0">
+          <% if(!currentUser) { %>
+            <div class="d-flex align-items-center gap-3">
+                <a href="/login" class="btn-login">Log in</a>
+                <a href="/signup" class="btn-signup">Sign up</a>
+             </div>
+          <% } else { %>
+            <div class="dropdown">
+              <div class="user-menu-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-bars" style="font-size: 14px; margin-left: 2px;"></i>
+                <div class="user-avatar">
+                   <i class="fa-solid fa-user"></i>
+                </div>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 12px; overflow: hidden;">
+                <li><a class="dropdown-item py-2 fw-bold" href="/listings">Explore</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item py-2" href="#">Account</a></li>
+                <li><a class="dropdown-item py-2 text-danger" href="/logout">Log out</a></li>
+              </ul>
+            </div>
+          <% } %>
+        </div>
+      </div>
+      
     </div>
   </div>
 </nav>

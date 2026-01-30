@@ -1,54 +1,257 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<body>
-    <div class="row">
-        <div class="col-8 offset-2">
-        <h3>Edit listing</h3>
-            <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
-                <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" name="listing[title]" value="<%=listing.title %>" class="form-control" required>
-                        <div class="valid-feedback">Title looks good!</div>
-                        <div class="invalid-feedback">Title must be 3 characters long.</div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea name="listing[description]" class="form-control" required><%=listing.description%></textarea>
-                    <div class="valid-feedback">Nice description-gives enough details</div>
-                    <div class="invalid-feedback">Description is required</div>
-                </div>
-            
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image</label>
-                    <input type="text" name="listing[image][url]" value="<%=listing.image.url %>" class="form-control" required>
-                </div>
+<style>
+  :root {
+    --brand-red: #ff385c;
+    --text-main: #222222;
+    --border-soft: #dddddd;
+  }
 
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="number" name="listing[price]" value="<%=listing.price %>" class="form-control" required>  
-                        <div class="valid-feedback">Valid </div>
-                        <div class="invalid-feedback">Price is required.</div>       
-                    </div>
-                
-                    <div class="mb-3 col-md-8">
-                        <label for="location" class="form-label">Location</label>
-                        <input type="text" name="listing[location]" value="<%=listing.location %>" class="form-control" required> 
-                        <div class="valid-feedback">Location Added!</div>
-                        <div class="invalid-feedback">Location is required.</div>         
-                    </div>                    
-                </div>
+  /* Centering the page content */
+  .center-container {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+  }
 
-                <div class="mb-3">
-                    <label for="country" class="form-label">Country</label>
-                    <input type="text" name="listing[country]" value="<%=listing.country %>" class="form-control" required>
-                    <div class="valid-feedback">Country name valid.</div>
-                    <div class="invalid-feedback">Country name invalid</div>             
-                </div>
+  .form-box {
+    width: 100%;
+    max-width: 800px;
+  }
 
-                <button class="btn btn-dark edit-btn">Edit</button><br><br>
+  .form-title {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--text-main);
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
 
-            </form>
+  /* Responsive Horizontal Layout */
+  .field-group {
+    display: flex;
+    margin-bottom: 1.8rem;
+  }
+
+  .label-side {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding-top: 10px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .input-side {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+
+  /* Inputs */
+  .form-control {
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1rem;
+    box-shadow: none !important;
+  }
+
+  .form-control:focus {
+    border-color: var(--text-main);
+  }
+
+  /* Image Preview Styling */
+  .preview-card {
+    width: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-soft);
+    margin-bottom: 10px;
+  }
+  
+  .preview-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  /* Simple Red Button - No Hover Effects */
+  .edit-btn {
+    background-color: var(--brand-red);
+    color: white !important;
+    border: none;
+    padding: 14px 50px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .edit-btn:hover {
+    background-color: var(--brand-red);
+    transform: none;
+  }
+
+  /* Dropdown Styling */
+  .dropdown-toggle-custom {
+    width: 100%;
+    text-align: left;
+    background: #fff;
+    border: 1px solid var(--border-soft);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #6c757d;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+
+  .category-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    cursor: pointer;
+  }
+
+  .category-item input { accent-color: var(--brand-red); }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .field-group { flex-direction: column; }
+    .label-side, .input-side { flex: 0 0 100%; max-width: 100%; }
+    .label-side { padding-top: 0; margin-bottom: 8px; }
+  }
+</style>
+
+<div class="center-container">
+  <div class="form-box">
+    <h3 class="form-title">Edit listing</h3>
+
+    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+      
+      <div class="field-group">
+        <div class="label-side">
+          <label for="title" class="form-label">Title</label>
         </div>
-    </div>
-</body>
+        <div class="input-side">
+          <input type="text" name="listing[title]" value="<%= listing.title %>" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label for="description" class="form-label">Description</label>
+        </div>
+        <div class="input-side">
+          <textarea name="listing[description]" class="form-control" rows="5" required><%= listing.description %></textarea>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Current Photo</label>
+        </div>
+        <div class="input-side">
+          <div class="preview-card">
+            <img src="<%= originalImage %>" alt="Current Image">
+          </div>
+          <p class="text-muted small">This is the image currently visible to guests.</p>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Category</label>
+        </div>
+        <div class="input-side">
+          <div class="dropdown">
+            <button class="dropdown-toggle-custom dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Update Categories
+            </button>
+            <ul class="dropdown-menu">
+              <% const categories = ["Trending","Solo","Rooms","Iconic Cities","Hill Stations","Arctic","Apartments","Amazing Pools","Camping","Luxury","Lakefront","Forest Retreats"]; %>
+              <% categories.forEach(cat => { %>
+                <li class="category-item">
+                  <input type="checkbox" name="listing[category][]" value="<%= cat %>" id="<%= cat %>" 
+                  <%= listing.category.includes(cat) ? "checked" : "" %>>
+                  <label for="<%= cat %>" class="mb-0 fw-normal"><%= cat %></label>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Replace Photo</label>
+        </div>
+        <div class="input-side">
+          <input type="file" name="listing[image][url]" class="form-control">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Details</label>
+        </div>
+        <div class="input-side">
+          <div class="row g-2">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text bg-white" style="border-right:0;">₹</span>
+                <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control" style="border-left:0;" required>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Country</label>
+        </div>
+        <div class="input-side">
+          <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="field-group mt-4">
+        <div class="label-side"></div>
+        <div class="input-side">
+          <button class="edit-btn">Save Changes</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  (() => {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>

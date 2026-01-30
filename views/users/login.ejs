@@ -1,28 +1,193 @@
 <% layout("layouts/boilerplate") %>
-<div class="row mt-3 mb-5">
-    <h3 class="col-8 offset-3">Login on Rentora</h3>
-    <br><br>
-    <div class="col-8 offset-2">
-        <form action="/login" method="POST" class="needs-validation" novalidate>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" id="username" class="form-control" required>
-                <div class="valid-feedback">Looks good!</div>
-                <div class="invalid-feedback">Username always required!</div>
-            </div>
-             
-            <div class="mb-3">
-               <label for="password" class="form-label">Password</label>
-               <input type="password" name="password" class="form-control" id="password" required>
-            </div>
 
-            <div class="mb-3 form-check">
-               <input type="checkbox" class="form-check-input" id="exampleCheck1">
-               <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
+<style>
+  :root {
+    --brand-red: #ff385c;
+    --dark-text: #222222;
+    --border-soft: #ebebeb;
+  }
 
-            <button type="submit" class="btn btn-success">Login</button>
-        </form>
-    </div>
+  /* Centered Page Wrapper */
+  .login-viewport {
+    min-height: 85vh;
+    display: flex;
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+    padding: 2rem 1.5rem; 
+  }
+
+  .login-width {
+    width: 100%;
+    max-width: 550px; /* Slightly tighter than signup for a focused feel */
+    margin: 0 auto; 
+  }
+
+  .login-title {
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--dark-text);
+    margin-bottom: 3rem;
+    letter-spacing: -0.5px;
+    text-align: left;
+  }
+
+  /* Desktop Side-Label Grid */
+  .field-row {
+    display: flex;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+
+  .field-label {
+    flex: 0 0 30%;
+    max-width: 30%;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--dark-text);
+  }
+
+  .field-input-area {
+    flex: 0 0 70%;
+    max-width: 70%;
+  }
+
+  /* Premium Minimal Underline Inputs */
+  .form-control-minimal {
+    border: none;
+    border-bottom: 2px solid var(--border-soft);
+    border-radius: 0;
+    padding: 10px 0;
+    width: 100%;
+    font-size: 1.1rem;
+    background: transparent;
+    box-shadow: none !important;
+  }
+
+  .form-control-minimal:focus {
+    outline: none;
+    border-color: var(--brand-red);
+  }
+
+  /* Static Premium Button with Tactile Click */
+  .btn-login-premium {
+    background-color: var(--brand-red);
+    color: #ffffff !important;
+    border: none;
+    padding: 15px 0;
+    width: 100%;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .btn-login-premium:active {
+    transform: scale(0.98);
+  }
+
+  /* Remove hover effects */
+  .btn-login-premium:hover {
+    background-color: var(--brand-red);
+  }
+
+  /* Optimized Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .login-viewport {
+      padding: 1rem 2rem; /* Consistent spacing from edges */
+    }
+
+    .field-row {
+      flex-direction: column;
+      align-items: stretch;
+      margin-bottom: 1.8rem;
+    }
+
+    .field-label, .field-input-area {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .field-label {
+      margin-bottom: 6px;
+      font-size: 0.75rem;
+      text-align: left;
+    }
+
+    .login-title {
+      font-size: 1.8rem;
+      text-align: center; /* Balanced center on mobile */
+      margin-bottom: 2.5rem;
+    }
+    
+    .footer-links {
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="login-viewport">
+  <div class="login-width">
+    
+    <div class="login-title">Login to Rentora</div>
+
+    <form action="/login" method="POST" class="needs-validation" novalidate>
+      
+      <div class="field-row">
+        <div class="field-label">Username</div>
+        <div class="field-input-area">
+          <input type="text" name="username" class="form-control-minimal" placeholder="Enter your username" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Password</div>
+        <div class="field-input-area">
+          <input type="password" name="password" class="form-control-minimal" placeholder="••••••••" required>
+        </div>
+      </div>
+
+      <div class="field-row" style="margin-bottom: 1.5rem;">
+        <div class="field-label d-none d-md-block"></div>
+        <div class="field-input-area d-flex justify-content-between align-items-center">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label small text-muted" for="rememberMe">Remember me</label>
+          </div>
+          <a href="#" class="small text-muted" style="text-decoration: none;">Forgot password?</a>
+        </div>
+      </div>
+
+      <div class="field-row mt-4">
+        <div class="field-label d-none d-md-block"></div> 
+        <div class="field-input-area">
+          <button type="submit" class="btn-login-premium">Login</button>
+          
+          <div class="mt-4 footer-links">
+            <span class="text-muted small">New to Rentora?</span>
+            <a href="/signup" class="small fw-bold" style="color: var(--dark-text); text-decoration: none; border-bottom: 2px solid var(--brand-red); margin-left: 5px;">Create Account</a>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
 </div>
 
+<script>
+  (() => {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>

@@ -1,51 +1,187 @@
 <% layout("layouts/boilerplate") %>
-<div class="row mt-3 mb-5">
-    <h3 class="col-6 offset-3">SignUp on Rentora</h3>
-    <div class="col-6 offset-3">
-        <form action="/signup" method="POST" class="needs-validation" novalidate>
-            <!-- <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" id="username" class="form-control" required>
-                <div class="valid-feedback">Looks good!</div>
-                <div class="invalid-feedback">Username always required!</div>
-            </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">email</label>
-                <input type="email" name="email" id="email" class="form-control" required>
-            </div>
+<style>
+  :root {
+    --brand-red: #ff385c;
+    --dark-text: #222222;
+    --border-soft: #ebebeb;
+  }
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
-            <button class="btn btn-success">Signup</button> -->
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" id="username" class="form-control" required>
-                <div class="valid-feedback">Looks good!</div>
-                <div class="invalid-feedback">Username always required!</div>
-            </div>
+  /* Centered Page Wrapper */
+  .signup-viewport {
+    min-height: 85vh;
+    display: flex;
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+    padding: 2rem 1.5rem; /* Added horizontal padding for breathing room */
+  }
 
-            <div class="mb-3">
-               <label for="email" class="form-label">Email address</label>
-               <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" required>
-               <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-               <div class="invalid-feedback">Username always required!</div>
-            </div>
-             
-            <div class="mb-3">
-               <label for="password" class="form-label">Password</label>
-               <input type="password" name="password" class="form-control" id="password" required>
-            </div>
+  .signup-width {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto; /* Force horizontal centering */
+  }
 
-            <div class="mb-3 form-check">
-               <input type="checkbox" class="form-check-input" id="exampleCheck1">
-               <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
+  .signup-title {
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--dark-text);
+    margin-bottom: 3rem;
+    letter-spacing: -0.5px;
+    text-align: left; /* Kept left for premium look, but centered in container */
+  }
 
-            <button type="submit" class="btn btn-success">SignUp</button>
-        </form>
-    </div>
+  /* Desktop Side-Label Grid */
+  .field-row {
+    display: flex;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+
+  .field-label {
+    flex: 0 0 30%;
+    max-width: 30%;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--dark-text);
+  }
+
+  .field-input-area {
+    flex: 0 0 70%;
+    max-width: 70%;
+  }
+
+  /* Premium Minimal Underline Inputs */
+  .form-control-minimal {
+    border: none;
+    border-bottom: 2px solid var(--border-soft);
+    border-radius: 0;
+    padding: 10px 0;
+    width: 100%;
+    font-size: 1.05rem;
+    background: transparent;
+    box-shadow: none !important;
+  }
+
+  .form-control-minimal:focus {
+    outline: none;
+    border-color: var(--brand-red);
+  }
+
+  /* Static Premium Button */
+  .btn-signup-premium {
+    background-color: var(--brand-red);
+    color: #ffffff !important;
+    border: none;
+    padding: 15px 0;
+    width: 100%;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .btn-signup-premium:active {
+    transform: scale(0.98);
+  }
+
+  .btn-signup-premium:hover {
+    background-color: var(--brand-red); /* Static color */
+  }
+
+  /* Optimized Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .signup-viewport {
+      padding: 1rem 2rem; /* Shifting away from edges on mobile */
+    }
+
+    .field-row {
+      flex-direction: column;
+      align-items: stretch; /* Ensures inputs take full width of centered container */
+      margin-bottom: 1.8rem;
+    }
+
+    .field-label, .field-input-area {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .field-label {
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+      text-align: left;
+    }
+
+    .signup-title {
+      font-size: 1.8rem;
+      text-align: center; /* Center title on mobile for better balance */
+      margin-bottom: 2.5rem;
+    }
+    
+    .text-link-wrapper {
+      text-align: center; /* Centering the footer links on mobile */
+    }
+  }
+</style>
+
+<div class="signup-viewport">
+  <div class="signup-width">
+    
+    <div class="signup-title">Join Rentora</div>
+
+    <form action="/signup" method="POST" class="needs-validation" novalidate>
+      
+      <div class="field-row">
+        <div class="field-label">Username</div>
+        <div class="field-input-area">
+          <input type="text" name="username" class="form-control-minimal" placeholder="Pick a unique name" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Email</div>
+        <div class="field-input-area">
+          <input type="email" name="email" class="form-control-minimal" placeholder="email@example.com" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Password</div>
+        <div class="field-input-area">
+          <input type="password" name="password" class="form-control-minimal" placeholder="Create a strong password" required>
+        </div>
+      </div>
+
+      <div class="field-row mt-4">
+        <div class="field-label d-none d-md-block"></div> <div class="field-input-area">
+          <button type="submit" class="btn-signup-premium">Create Account</button>
+          
+          <div class="mt-4 text-link-wrapper">
+            <span class="text-muted small">Already a member?</span>
+            <a href="/login" class="small fw-bold" style="color: var(--dark-text); text-decoration: none; border-bottom: 2px solid var(--brand-red); margin-left: 5px;">Login</a>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
 </div>
 
+<script>
+  (() => {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>

@@ -1,55 +1,235 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<body>
-    <div class="row">
-        <div class="col-8 offset-2"><br>
 
-            <h3>Create new listing</h3>
-            <form action="/listings" method="POST" class="needs-validation" novalidate>
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" name="listing[title]" placeholder="Add a catchy title ... " class="form-control" required>
-                    <div class="valid-feedback">Title looks good!</div>
-                    <div class="invalid-feedback">Title must be 3 characters long.</div>
-                </div>
-            
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea name="listing[description]" placeholder="Description about your service" class="form-control" required></textarea>
-                    <div class="valid-feedback">Nice description-gives enough details</div>
-                    <div class="invalid-feedback">Description is required</div>
-                </div>
-            
-                <div class="mb-3">
-                    <label for="listing[image]" class="form-label">Image</label>
-                    <input type="text" name="listing[image][url]" placeholder="Enter Image-URL" class="form-control">
-                </div>
-                
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="listing[price]" class="form-label">Price</label>
-                        <input type="number" name="listing[price]" placeholder="1299" class="form-control" required> 
-                        <div class="invalid-feedback">Price is required.</div>      
-                    </div>
-                
-                    <div class="mb-3 col-md-8">
-                        <label for="listing[location]" class="form-label">Location</label>
-                        <input type="text" name="listing[location]" placeholder="Enter location" class="form-control" required>
-                        <div class="valid-feedback">Location Added!</div>
-                        <div class="invalid-feedback">Location is required.</div>        
-                    </div>                    
-                </div>
-            
-                <div class="mb-3">
-                    <label for="listing[country]" class="form-label">Country</label>
-                    <input type="text" name="listing[country]" placeholder="India" class="form-control" required>
-                    <div class="valid-feedback">Country name valid.</div>
-                    <div class="invalid-feedback">Country name invalid</div>           
-                </div>
-            
-                <button class="btn btn-dark add-btn">Add</button><br><br>
-            
-            </form>
+<style>
+  :root {
+    --brand-red: #ff385c;
+    --text-main: #222222;
+    --border-soft: #dddddd;
+  }
 
+  /* Centering the page content */
+  .center-container {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .form-box {
+    width: 100%;
+    max-width: 750px;
+  }
+
+  .form-title {
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--text-main);
+    margin-bottom: 2.5rem;
+  }
+
+  /* Responsive Horizontal Layout */
+  .field-group {
+    display: flex;
+    margin-bottom: 1.5rem;
+  }
+
+  .label-side {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding-top: 10px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .input-side {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+
+  /* Inputs */
+  .form-control {
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1rem;
+    box-shadow: none !important;
+  }
+
+  .form-control:focus {
+    border-color: var(--text-main);
+  }
+
+  /* Simple Red Button - No Hover Effects */
+  .add-btn {
+    background-color: var(--brand-red);
+    color: white !important;
+    border: none;
+    padding: 12px 40px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: none; /* Disables transitions */
+  }
+
+  .add-btn:hover {
+    background-color: var(--brand-red); /* Keeps color static */
+    transform: none; /* No movement */
+  }
+
+  /* Dropdown Styling */
+  .dropdown-toggle-custom {
+    width: 100%;
+    text-align: left;
+    background: #fff;
+    border: 1px solid var(--border-soft);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #6c757d;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .category-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .category-item input { accent-color: var(--brand-red); }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .field-group {
+      flex-direction: column;
+    }
+    .label-side, .input-side {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    .label-side {
+      padding-top: 0;
+      margin-bottom: 6px;
+    }
+  }
+</style>
+
+<div class="center-container">
+  <div class="form-box">
+    <h3 class="form-title">Create new listing</h3>
+
+    <form action="/listings" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+      
+      <div class="field-group">
+        <div class="label-side">
+          <label for="title" class="form-label">Title</label>
         </div>
-    </div>
-</body>
+        <div class="input-side">
+          <input type="text" name="listing[title]" placeholder="Add a catchy title ... " class="form-control" required>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label for="description" class="form-label">Description</label>
+        </div>
+        <div class="input-side">
+          <textarea name="listing[description]" placeholder="Describe your service" class="form-control" rows="4" required></textarea>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Category</label>
+        </div>
+        <div class="input-side">
+          <div class="dropdown">
+            <button class="dropdown-toggle-custom dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Select Categories
+            </button>
+            <ul class="dropdown-menu">
+              <% const cats = ["Trending", "Solo", "Rooms", "Iconic Cities", "Hill Stations", "Arctic", "Apartments", "Amazing Pools", "Camping", "Luxury", "Lakefront", "Forest Retreats"]; %>
+              <% cats.forEach(cat => { %>
+                <li class="category-item">
+                  <input type="checkbox" name="listing[category][]" value="<%= cat %>" id="<%= cat %>">
+                  <label for="<%= cat %>" class="mb-0 fw-normal"><%= cat %></label>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Photo</label>
+        </div>
+        <div class="input-side">
+          <input type="file" name="listing[image][url]" class="form-control">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Details</label>
+        </div>
+        <div class="input-side">
+          <div class="row g-2">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text bg-white" style="border-right:0;">₹</span>
+                <input type="number" name="listing[price]" placeholder="Price" class="form-control" style="border-left:0;" required>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <input type="text" name="listing[location]" placeholder="City / Location" class="form-control" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="label-side">
+          <label class="form-label">Country</label>
+        </div>
+        <div class="input-side">
+          <input type="text" name="listing[country]" placeholder="e.g. India" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="field-group mt-4">
+        <div class="label-side"></div>
+        <div class="input-side">
+          <button class="add-btn">Add Listing</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  (() => {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>

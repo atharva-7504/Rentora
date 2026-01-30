@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV != "production"){
+    require("dotenv").config();
+}
 const express = require("express");
 const mongoose = require("mongoose");
 const PORT = 3000;
@@ -5,12 +8,14 @@ const app = express();
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const MONGO_URL = "mongodb://127.0.0.1:27017/rentora";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/rentora";
+const DB_URL = process.env.ATLAS_DB_URL;
 const ExpressError = require("./utils/ExpressError.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/reviews.js");
 const userRouter = require("./routes/user.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStratergy = require("passport-local");
@@ -22,7 +27,7 @@ main().then((res)=>{
 }).catch(err=>console.log(err));
 
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(DB_URL);
 }
 
 app.set("view engine","ejs");
@@ -33,20 +38,30 @@ app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
-//Root Route
-app.get("/",(req,res)=>{
-    res.send("Working");
+// //Root Route
+// app.get("/",(req,res)=>{
+//     res.send("Working");
+// })
+const store = MongoStore.create({
+    mongoUrl: DB_URL,
+    crypto:{
+        secret:"mysecretcode",
+    },
+    touchAfter:24 * 3600,
 })
-
+store.on("error",(err)=>{
+    console.log("ERROR in MONGOOSE SESSION STORE",err);
+})
 app.use(session({
-    secret:"mysecretcode",
+    secret:process.env.SESSION_SECRET,
     resave:false,
     saveUninitialized:true,
     cookie:{
         expires:Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly:true,
-    }
+    },
+    store:store
 }))
 app.use(flash());
 app.use(passport.initialize());
