@@ -106,6 +106,12 @@ This keeps routes clean and makes the application scalable.
 
 ---
 
+##  Databse diagram 
+
+<img width="867" height="641" alt="Screenshot 2026-02-14 152547" src="https://github.com/user-attachments/assets/9cff42ab-c3cc-4d05-9223-f8070155b22a" />
+
+---
+
 ## 🚀 Installation & Running the Server
 
 ### 📌 Prerequisites
