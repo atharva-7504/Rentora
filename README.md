@@ -1,10 +1,11 @@
-# 🏨 Rentora — Scalable Hotel & Property Listing Platform
 
+# Rentora — Scalable Hotel & Property Listing Platform
+# <img width="280" height="200" align="left" alt="location-arrow-icon-png-removebg-preview" src="https://github.com/user-attachments/assets/4993c27e-c77a-453f-94b6-5afe420bd932" /> &ensp;
 <p align="center">
   <strong>A modern, backend-driven platform for hotel & property listings</strong><br/>
   Built with scalability, clean architecture, and real-world backend practices
 </p>
-
+&ensp;
 <p align="center">
   <a href="https://rentora-qzob.onrender.com/listings">
     <img src="https://img.shields.io/badge/🌐 Live Demo-Explore-success?style=for-the-badge" />
@@ -108,7 +109,7 @@ This keeps routes clean and makes the application scalable.
 
 ##  Databse diagram 
 
-<img width="867" height="641" alt="Screenshot 2026-02-14 152547" src="https://github.com/user-attachments/assets/9cff42ab-c3cc-4d05-9223-f8070155b22a" />
+<img width="800" height="650" align="center" alt="Screenshot 2026-02-14 152547" src="https://github.com/user-attachments/assets/9cff42ab-c3cc-4d05-9223-f8070155b22a" />
 
 ---
 
@@ -147,7 +148,7 @@ http://localhost:3000/listings
 ## Project Showcase : 
 
 <img width="1919" height="961" alt="Screenshot 2026-01-31 122425" src="https://github.com/user-attachments/assets/f7fb864b-4741-493f-ba6a-f1fe3001ef5f" />
-
+&ensp;&ensp;
 
 <img width="1918" height="887" alt="Screenshot 2026-01-31 153759" src="https://github.com/user-attachments/assets/e6fc3c05-5b23-4b68-a84e-53557cf68e69" />
 
@@ -157,7 +158,20 @@ http://localhost:3000/listings
 ## 🌐 Live Demo
 
 Check out **Rentora** in action:  
-[🌐 Live Demo](https://rentora-qzob.onrender.com/listings)
+[🌐 (https://rentora-qzob.onrender.com/listings)](https://rentora-qzob.onrender.com/listings)
+
+---
+
+## 🧪 Testing Reports
+<img width="603" height="800" alt="Screenshot 2026-05-02 201558" src="https://github.com/user-attachments/assets/7fd3a926-9191-4e94-b260-15cc18c92794" />
+&ensp;&ensp;
+<img width="945" height="813" alt="Screenshot 2026-05-02 201532" src="https://github.com/user-attachments/assets/5d3180ea-b221-421d-ad3b-2574f78560f8" />
+
+&ensp;&ensp;
+
+```
+Check report.html
+```
 
 ---
 ```bash
